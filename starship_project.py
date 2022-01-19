@@ -23,6 +23,7 @@ def get_all_json(api_link):
             break
         api_link = resp["next"]
 
+    print("List of all JSON files created...")
     return list_of_jsons
 
 
@@ -51,6 +52,8 @@ def change_pilot_api_links(list_of_jsons):
             for k in range(len(list_of_jsons[i][j]["pilots"])):                                         # Loop through list of pilot data
                 list_of_jsons[i][j]["pilots"][k] = api_link_to_name(list_of_jsons[i][j]["pilots"][k])   # Update pilot list with name (API link --> Name)
                 list_of_pilots.append(list_of_jsons[i][j]["pilots"][k])                                 # Append pilot name to list
+
+    print("Pilot API links changed to character name...")
     return list_of_jsons, list(set(list_of_pilots))                                                     # Return updated jsons and list of pilot names (removed dupes)
 
 
@@ -69,6 +72,7 @@ def change_pilot_name_to_id(list_of_jsons):
                 pilot_id = db.characters.find_one({"name":pilot_name},{"_id"})["_id"]   # Query characters collection for the ID of the pilot
                 list_of_jsons[i][j]["pilots"][k] = pilot_id                             # Update JSON file
 
+    print("Pilot name changed to character ID...")
     return list_of_jsons
 
 
@@ -83,12 +87,13 @@ def upload_jsons(list_of_jsons):
         for starship in json:
             db.starships.insert_one(starship)
 
+    print("Uploaded to MongoDB database")
     return None
 
 
 # Execution
 jsons = get_all_json("https://swapi.dev/api/starships")     # Get all JSONs
 name_jsons, pilots = change_pilot_api_links(jsons)          # Update JSONs to include Pilot name instead of API link
-pp(pilots)                                                  # Print list of pilots, notice Jek Tono Porkins, have a laugh
+#pp(pilots)                                                  # Print list of pilots, notice Jek Tono Porkins, have a laugh
 id_jsons = change_pilot_name_to_id(name_jsons)              # Update JSONs to include character ID instead of pilot name
 upload_jsons(id_jsons)                                      # Upload modified JSONs to starships collection
