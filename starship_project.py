@@ -32,7 +32,7 @@ def api_url_to_id(api_link):
 
     name = requests.get(api_link).json()["name"]
     pilot_id = db.characters.find_one({"name": name}, {"_id"})["_id"]
-    print(type(pilot_id))
+
     return pilot_id
 
 
