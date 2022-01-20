@@ -65,7 +65,8 @@ def upload_jsons(jsons):
     return None
 
 
-# Execution
-starship_jsons = get_all_jsons("https://swapi.dev/api/starships")       # Get all JSONs
-id_jsons = update_jsons(starship_jsons)                                  # Update JSONs
-upload_jsons(id_jsons)                                                   # Upload modified JSONs to starships collection
+if __name__ == "__main__":
+    # Execution
+    starship_jsons = get_all_jsons("https://swapi.dev/api/starships")       # Get all JSONs
+    id_jsons = update_jsons(starship_jsons)                                  # Update JSONs
+    upload_jsons(id_jsons)                                                   # Upload modified JSONs to starships collection
