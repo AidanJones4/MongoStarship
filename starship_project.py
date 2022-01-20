@@ -4,8 +4,6 @@ import requests
 client = pymongo.MongoClient()
 db = client['starwars']
 
-db.starships.drop()
-
 
 def get_all_jsons(api_link):
 
@@ -34,6 +32,7 @@ def api_url_to_id(api_link):
 
     name = requests.get(api_link).json()["name"]
     pilot_id = db.characters.find_one({"name": name}, {"_id"})["_id"]
+    print(type(pilot_id))
     return pilot_id
 
 
@@ -66,6 +65,9 @@ def upload_jsons(jsons):
 
 
 if __name__ == "__main__":
+
+    db.starships.drop()
+
     # Execution
     starship_jsons = get_all_jsons("https://swapi.dev/api/starships")       # Get all JSONs
     id_jsons = update_jsons(starship_jsons)                                  # Update JSONs
